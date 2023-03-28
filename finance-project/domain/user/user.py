@@ -1,7 +1,15 @@
+from uuid import UUID
+
+
 class User:
-    def __init__(self, username: str, stocks: list[str] = None):
+    def __init__(self, uuid: UUID, username: str, stocks: list[str] = None):
         self.__username = username
         self.__stocks = stocks if stocks else []
+        self.__id = uuid
+
+    @property
+    def id(self) -> UUID:
+        return self.__id
 
     @property
     def username(self) -> str:
