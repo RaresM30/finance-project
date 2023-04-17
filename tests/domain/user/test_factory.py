@@ -1,9 +1,11 @@
 import unittest
 from domain.user.factory import UserFactory, InvalidUsername
 from domain.user.user import User
+from uuid import UUID
 
 
-# TODO update tests
+
+
 class UnitFactoryTestCase(unittest.TestCase):
     def test_it_creates_user_if_the_username_is_between_6_and_20_chars(self):
         username = "between-6-and-20-"
@@ -56,6 +58,19 @@ class UnitFactoryTestCase(unittest.TestCase):
             "Username should have only letters and numbers as characters or '-' ",
             str(context.exception),
         )
+
+    def test_make_from_persistence(self):
+        username = "rares123-"
+        uuid_test = "5a4c46aa-7fg4415e980-1932e85b-97d7e"
+        test_info = (uuid_test, username)
+
+        factory = UserFactory()
+        user = factory.make_from_persistence(test_info)
+
+        self.assertIsInstance(user, User)
+        self.assertEqual(user.id, UUID(uuid_test))
+        self.assertEqual(user.username, username)
+
 
 
 if __name__ == "__main__":
