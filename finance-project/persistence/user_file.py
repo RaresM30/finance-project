@@ -19,7 +19,7 @@ class UserPersistenceFile(UserPersistenceInterface):
             file.close()
             users_info = json.loads(contents)
             factory = UserFactory()
-            return [factory.make_from_persistance(x) for x in users_info]
+            return [factory.make_from_persistence(x) for x in users_info]
         except:
             #todo hw, log error
                 return []
@@ -44,3 +44,7 @@ class UserPersistenceFile(UserPersistenceInterface):
                     username=u.username,
                     stocks=assets,
                 )
+
+    def delete_by_id(self, uid: str):
+        pass
+
