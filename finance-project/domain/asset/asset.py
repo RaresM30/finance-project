@@ -63,7 +63,7 @@ class Asset:
         percent_diff = (diff / self.closed_price) * 100
         if diff > 0:
             return (
-                f"The closed price {self.closed_price} is {percent_diff:.2f}%"
+                f"The closed price {self.closed_price} is {percent_diff:.2}%"
                 f" higher than the current price {self.current_price}"
             )
         elif diff < 0:
