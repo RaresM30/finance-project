@@ -28,15 +28,16 @@ class UserRepo:
         return self.__persistence.get_by_id(uid)
 
     def delete_by_id(self, uid: str):
-        current_users = self.get_all()
-        users_without_id = [u for u in current_users if u.id != uuid.UUID(hex=uid)]
-        users_info = [(str(x.id), x.username, x.stocks) for x in users_without_id]
-        json_current_users = json.dumps(users_info)
-        with open(self.__file_path, "w") as f:
-            f.write(json_current_users)
+        self.__check_we_have_users()
+        self.__persistence.delete_by_id(uid)
+
+    def edit(self, user_id: str, username: str):
+        self.__check_we_have_users()
+        self.__persistence.edit(user_id, username)
+        for user in self.__users:
+            if user.id == uuid.UUID(hex=user_id):
+                user.username = username
 
     def __check_we_have_users(self):
         if self.__users is None:
             self.__users = self.__persistence.get_all()
-
-
