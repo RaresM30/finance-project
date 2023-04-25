@@ -35,3 +35,8 @@ class UserPersistenceSqlite(UserPersistenceInterface):
                 cursor.execute(f"INSERT INTO users (id, username) VALUES ('{user.id}', '{user.username}')")
             conn.commit()
 
+    def delete_by_id(self, uid: str):
+        pass
+
+    def get_by_id(self, uid: str) -> User:
+        pass
