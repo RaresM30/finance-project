@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-
+import json
 from domain.asset.factory import AssetFactory
 from domain.asset.repo import AssetRepo
 from domain.user.factory import UserFactory
@@ -11,9 +11,26 @@ from persistence.user_sqlite import UserPersistenceSqlite
 users_router = APIRouter(prefix="/users")
 
 
+class InvalidPersistenceType(Exception):
+    pass
+
+
+def check_persistence_type(file_path):
+    with open(file_path, 'r') as config_info:
+        persistence_type = config_info.read()
+        data = json.loads(persistence_type)
+        if "sqlite" in str(data["persistence"]):
+            return UserPersistenceSqlite()
+        elif "json" in str(data["persistence"]):
+            return UserPersistenceFile("main_users.json")
+        else:
+            raise InvalidPersistenceType("Unrecognized persistence config type. Please check config.json file.")
+
+
 def get_user_repo() -> UserRepo:
-    user_persistence = UserPersistenceFile("main_users.json")
-    #user_persistence = UserPersistenceSqlite()
+    user_persistence = check_persistence_type("config.json")
+    # user_persistence = UserPersistenceFile("main_users.json")
+    # user_persistence = UserPersistenceSqlite()
     return UserRepo(user_persistence)
 
 
@@ -41,6 +58,12 @@ def create_a_user(new_user: UserAdd, repo=Depends(get_user_repo)):
     user = UserFactory().make_new(new_user.username)
     repo.add(user)
     return user
+
+@users_router.put("/{user_id}", response_model=UserInfo)
+def edit_by_id(user_id: str, username: str, repo=Depends(get_user_repo)):
+    repo.edit(user_id, username)
+    return repo.get_by_id(user_id)
+
 
 
 # TODO fix api, return asset info
