@@ -15,20 +15,20 @@ class InvalidPersistenceType(Exception):
     pass
 
 
-def check_persistence_type(file_path):
+def persistence_type_by_choosing(file_path):
     with open(file_path, 'r') as config_info:
         persistence_type = config_info.read()
         data = json.loads(persistence_type)
-        if "sqlite" in str(data["persistence"]):
+        if "use.sqlite" in str(data["persistence"]):
             return UserPersistenceSqlite()
-        elif "json" in str(data["persistence"]):
+        elif "use.json" in str(data["persistence"]):
             return UserPersistenceFile("main_users.json")
         else:
             raise InvalidPersistenceType("Unrecognized persistence config type. Please check config.json file.")
 
 
 def get_user_repo() -> UserRepo:
-    user_persistence = check_persistence_type("config.json")
+    user_persistence = persistence_type_by_choosing("config.json")
     # user_persistence = UserPersistenceFile("main_users.json")
     # user_persistence = UserPersistenceSqlite()
     return UserRepo(user_persistence)
