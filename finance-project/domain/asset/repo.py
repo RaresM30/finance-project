@@ -1,43 +1,22 @@
-import sqlite3
 from domain.asset.asset import Asset
+from domain.asset.asset_persistence_interface import AssetPersistenceInterface
 from domain.user.user import User
 
 
 class AssetRepo:
-    def add_to_user(self, user: User, asset: Asset):
-        table = f"{user.id}-assets".replace("-", "_")
-        with sqlite3.connect(f"main_users.db") as conn:
-            cursor = conn.cursor()
-            try:
-                cursor.execute(f"INSERT INTO '{table}' (ticker, name, country, units) "
-                               f"VALUES ('{asset.ticker}', '{asset.name}', "
-                               f"'{asset.country}', {asset.units})")
-            except sqlite3.OperationalError:
-                cursor.execute(f"CREATE TABLE '{table}' "
-                               f"(ticker TEXT PRIMARY KEY, "
-                               f"name TEXT, country TEXT, units REAL)")
-                cursor.execute(f"INSERT INTO '{table}' (ticker, name, country, units) "
-                               f"VALUES ('{asset.ticker}', '{asset.name}', "
-                               f"'{asset.country}', {asset.units})")
-            conn.commit()
+    def __init__(self, persistence: AssetPersistenceInterface):
+        self.__persistence = persistence
+        self.__assets = None
 
-    def get_for_user(self, user: User) -> list[Asset]:
-        table = f"{user.id}-assets".replace("-", "_")
-        with sqlite3.connect(f"main_users.db") as conn:
-            cursor = conn.cursor()
-            try:
-                cursor.execute(f"SELECT * FROM '{table}'")
-            except sqlite3.OperationalError as e:
-                if "no such table" in str(e):
-                    return []
-                else:
-                    raise e
-            assets_info = cursor.fetchall()
-        assets = [Asset(
-            ticker=x[0],
-            nr=x[3],
-            name=x[1],
-            country=x[2],
-            sector="sec"
-        )for x in assets_info]
-        return assets
+    def add(self, new_user: User, asset: Asset):
+        self.__check_we_have_assets(new_user)
+        self.__persistence.add(new_user, asset)
+        self.__assets.append([new_user, asset])
+
+    def get_all(self, new_user: User) -> list[Asset]:
+        self.__check_we_have_assets(new_user)
+        return self.__assets
+
+    def __check_we_have_assets(self, user: User):
+        if self.__assets is None:
+            self.__assets = self.__persistence.get_all(user)

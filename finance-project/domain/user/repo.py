@@ -3,7 +3,7 @@ import uuid
 from singleton import singleton
 from domain.asset.repo import AssetRepo
 from domain.user.factory import UserFactory
-from domain.user.persistence_interface import UserPersistenceInterface
+from domain.user.user_persistence_interface import UserPersistenceInterface
 from domain.user.user import User
 
 

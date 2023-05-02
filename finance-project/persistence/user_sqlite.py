@@ -1,5 +1,5 @@
 import sqlite3
-from domain.user.persistence_interface import UserPersistenceInterface
+from domain.user.user_persistence_interface import UserPersistenceInterface
 from domain.user.user import User
 from domain.user.factory import UserFactory
 
@@ -39,4 +39,7 @@ class UserPersistenceSqlite(UserPersistenceInterface):
         pass
 
     def get_by_id(self, uid: str) -> User:
+        pass
+
+    def edit(self, user_id: str, username: str):
         pass

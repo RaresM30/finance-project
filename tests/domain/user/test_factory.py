@@ -1,6 +1,6 @@
 import unittest
 from domain.user.factory import UserFactory, InvalidUsername
-from domain.user.user import User
+from domain.user.new_user import User
 from uuid import UUID
 
 

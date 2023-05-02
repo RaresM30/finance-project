@@ -1,5 +1,5 @@
 import unittest
-from domain.user.user import User
+from domain.user.new_user import User
 
 
 class UserTestCase(unittest.TestCase):

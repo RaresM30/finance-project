@@ -5,6 +5,7 @@ from domain.asset.repo import AssetRepo
 from domain.user.factory import UserFactory
 from domain.user.repo import UserRepo
 from api.models import UserAdd, UserInfo, AssetInfoUser, AssetAdd
+from persistence.asset_sqlite import AssetPersistenceSqlite
 from persistence.user_file import UserPersistenceFile
 from persistence.user_sqlite import UserPersistenceSqlite
 
@@ -75,6 +76,6 @@ def add_asset_to_user(user_id: str, asset: AssetAdd, repo=Depends(get_user_repo)
     # TODO homework, check we have a user otherwise throw exception code 404
     # user.add_stock(new_asset)
     print(user)
-    AssetRepo().add_to_user(user, new_asset)
+    AssetRepo(AssetPersistenceSqlite()).add(user, new_asset)
 
     return new_asset
