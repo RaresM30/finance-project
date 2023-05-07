@@ -1,11 +1,11 @@
 import json
 import uuid
 import logging
-from domain.asset.repo import AssetRepo
+
+
 from domain.user.factory import UserFactory
 from domain.user.user_persistence_interface import UserPersistenceInterface
 from domain.user.user import User
-from persistence.asset_sqlite import AssetPersistenceSqlite
 
 logging.basicConfig(
     filename="finance.log",
@@ -49,9 +49,11 @@ class UserPersistenceFile(UserPersistenceInterface):
 
     def get_by_id(self, uid: str) -> User:
         current_users = self.get_all()
+        from config.config_for_asset import check_asset_persistence_type
+        asset_persistence = check_asset_persistence_type("config.json")
         for u in current_users:
             if u.id == uuid.UUID(hex=uid):
-                assets = AssetRepo(AssetPersistenceSqlite()).get_all(u)
+                assets = asset_persistence.get_all(u)
 
                 return User(uuid=u.id,
                             username=u.username,
