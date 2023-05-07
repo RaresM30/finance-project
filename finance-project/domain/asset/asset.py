@@ -29,6 +29,10 @@ class Asset:
         return self.__country
 
     @property
+    def sector(self) -> str:
+        return self.__sector
+
+    @property
     def current_price(self) -> float:
         price = self.__info["lastPrice"]
         return round(price, 2)
