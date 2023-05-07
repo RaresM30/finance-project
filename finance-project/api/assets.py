@@ -1,3 +1,5 @@
+import json
+
 import yfinance
 import uuid
 from fastapi import APIRouter
@@ -5,7 +7,12 @@ from api.models import AssetInfoPrice
 from domain.asset.factory import AssetFactory
 from matplotlib import pyplot
 
+
+
 assets_router = APIRouter(prefix="/assets")
+
+
+
 
 
 @assets_router.get("/{ticker}", response_model=AssetInfoPrice)
