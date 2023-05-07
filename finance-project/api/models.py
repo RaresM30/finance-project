@@ -1,8 +1,11 @@
+
+
 from pydantic import BaseModel, Field
 from uuid import UUID
 
 
 # todo add field with description, aprox half
+
 
 class OrmModel(BaseModel):
     class Config:
@@ -17,7 +20,7 @@ class AssetAdd(BaseModel):
     ticker: str
 
 
-class AssetInfoBase(BaseModel):
+class AssetInfoBase(OrmModel):
     ticker: str = Field(description="A code that identifies the asset")
     name: str = Field(description="The name that describes the chosen asset")
     country: str = Field(description="The country where the asset first started")
