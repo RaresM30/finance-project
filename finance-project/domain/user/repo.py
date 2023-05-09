@@ -32,10 +32,10 @@ class UserRepo:
 
         for u in self.__users:
             if u.id == uuid.UUID(hex=uid):
-                asset_persistence = check_asset_persistence_type(
-                    "config.json"
-                )
-                assets = asset_persistence.get_all(u)
+                # asset_persistence = check_asset_persistence_type(
+                #     "config/config.json"
+                # )
+                assets = self.__asset.get_all(u)
                 return User(
                     uuid=u.id,
                     username=u.username,
@@ -45,6 +45,11 @@ class UserRepo:
     def delete_by_id(self, uid: str):
         self.__check_we_have_users()
         self.__persistence.delete_by_id(uid)
+        # self.__persistence.get_all()
+        # for u in self.__users:
+        #     if uid == u.id:
+        #        self.__users.remove(u)
+        # self.__check_we_have_users()
 
     def edit(self, user_id: str, username: str):
         self.__check_we_have_users()
