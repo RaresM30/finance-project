@@ -12,13 +12,13 @@ users_router = APIRouter(prefix="/users")
 
 
 def get_asset_repo() -> AssetRepo:
-    asset_persistence = check_asset_persistence_type("config.json")
+    asset_persistence = check_asset_persistence_type("config/config.json")
     return AssetRepo(asset_persistence)
 
 
 def get_user_repo() -> UserRepo:
-    user_persistence = persistence_type_by_choosing("config.json")
-    asset_persistence = check_asset_persistence_type("config.json")
+    user_persistence = persistence_type_by_choosing("config/config.json")
+    asset_persistence = check_asset_persistence_type("config/config.json")
     return UserRepo(user_persistence, asset_persistence)
 
 
