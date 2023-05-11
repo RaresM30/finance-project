@@ -4,7 +4,7 @@ from pydantic import BaseModel, Field
 from uuid import UUID
 
 
-# todo add field with description, aprox half
+
 
 
 class OrmModel(BaseModel):
