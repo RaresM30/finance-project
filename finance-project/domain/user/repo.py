@@ -1,11 +1,7 @@
-import json
-import uuid
 
-from config.config_for_asset import check_asset_persistence_type
+import uuid
 from domain.asset.asset_persistence_interface import AssetPersistenceInterface
 from singleton import singleton
-from domain.asset.repo import AssetRepo
-from domain.user.factory import UserFactory
 from domain.user.user_persistence_interface import UserPersistenceInterface
 from domain.user.user import User
 
@@ -43,9 +39,10 @@ class UserRepo:
                 )
 
     def delete_by_id(self, uid: str):
+        self.__persistence.get_all()
         self.__check_we_have_users()
         self.__persistence.delete_by_id(uid)
-        # self.__persistence.get_all()
+
         # for u in self.__users:
         #     if uid == u.id:
         #        self.__users.remove(u)
