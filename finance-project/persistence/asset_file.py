@@ -25,7 +25,7 @@ class AssetFilePersistence(AssetPersistenceInterface):
     def add(self, new_user: User, asset: Asset):
         current_assets = self.get_all(new_user)
         current_assets.append(asset)
-        assets_info = [(x.ticker, x.units, x.name,
+        assets_info = [(x.ticker, x.nr, x.name,
                         x.country, x.current_price, x.currency,
                         x.closed_price, x.fifty_day_price,
                         x.today_low_price, x.today_high_price,
