@@ -2,7 +2,7 @@ import yfinance
 
 
 class Asset:
-    def __init__(self, ticker: str, nr: float, name: str, country: str, sector: str):
+    def __init__(self, ticker: str, nr: float, name: str, country: str, sector: str, ):
         self.__ticker = ticker
         self.__nr = nr
         self.__name = name
@@ -17,7 +17,7 @@ class Asset:
         return self.__ticker
 
     @property
-    def units(self) -> float:
+    def nr(self) -> float:
         return self.__nr
 
     @property
